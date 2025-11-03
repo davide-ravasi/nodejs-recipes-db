@@ -51,4 +51,13 @@ exports.getEditProduct = (req, res, next) => {
   });
 };
 
-exports.postEditProduct = (req, res, next) => {};
+exports.postEditProduct = (req, res, next) => {
+  const productId = req.params.productId;
+  const product = Product.findById(productId);
+  const title = req.body.title;
+  const price = req.body.price;
+  const imageUrl = req.body.imageUrl;
+  const description = req.body.description;
+
+  Product.edit(productId, { title, price, imageUrl, description, product });
+};

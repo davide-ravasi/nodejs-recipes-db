@@ -1,10 +1,16 @@
 [
   {
-    "id": "1",
-    "title": "ssadsad",
+    "title": "ssadsaddsfdsf",
     "price": "20.00",
     "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
-    "description": "asdasd"
+    "description": "                    asdasd\r\n                ",
+    "product": {
+      "id": "1",
+      "title": "ssadsad",
+      "price": "20.00",
+      "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
+      "description": "asdasd"
+    }
   },
   {
     "id": "2",

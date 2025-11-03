@@ -31,6 +31,32 @@ module.exports = class Product {
     });
   }
 
+  static edit(productId, newProduct) {
+    //console.log("Editing product:", productId, newProduct);
+
+    fs.readFile(p, (err, fileContent) => {
+      let products = [];
+      if (!err && fileContent.length > 0) {
+        products = JSON.parse(fileContent);
+      }
+
+      // change products data
+      const prodIndex = products.findIndex((prod) => {
+        return prod.id === productId;
+      });
+
+      if (prodIndex === -1) {
+        return;
+      }
+
+      products[prodIndex] = { ...newProduct };
+
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        console.log(err);
+      });
+    });
+  }
+
   static fetchAll() {
     return JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
   }
