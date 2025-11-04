@@ -8,8 +8,8 @@ const p = path.join(
 );
 
 module.exports = class Product {
-  constructor(title, price, imageUrl, description) {
-    this.id = Math.random().toString();
+  constructor(productId, title, price, imageUrl, description) {
+    this.id = productId;
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
@@ -24,38 +24,55 @@ module.exports = class Product {
         products = JSON.parse(fileContent);
       }
 
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
+      if (this.id) {
+        const prodIndex = products.findIndex((prod) => {
+          return prod.id === this.id;
+        });
+
+        if (prodIndex === -1) {
+          return;
+        }
+
+        products[prodIndex] = this;
+
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(err);
+        });
+      } else {
+        this.id = Math.random().toString();
+        products.push(this);
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(err);
+        });
+      }
     });
   }
 
-  static edit(productId, newProduct) {
-    //console.log("Editing product:", productId, newProduct);
+  // static edit(productId, newProduct) {
+  //   //console.log("Editing product:", productId, newProduct);
 
-    fs.readFile(p, (err, fileContent) => {
-      let products = [];
-      if (!err && fileContent.length > 0) {
-        products = JSON.parse(fileContent);
-      }
+  //   fs.readFile(p, (err, fileContent) => {
+  //     let products = [];
+  //     if (!err && fileContent.length > 0) {
+  //       products = JSON.parse(fileContent);
+  //     }
 
-      // change products data
-      const prodIndex = products.findIndex((prod) => {
-        return prod.id === productId;
-      });
+  //     // change products data
+  //     const prodIndex = products.findIndex((prod) => {
+  //       return prod.id === productId;
+  //     });
 
-      if (prodIndex === -1) {
-        return;
-      }
+  //     if (prodIndex === -1) {
+  //       return;
+  //     }
 
-      products[prodIndex] = { ...newProduct };
+  //     products[prodIndex] = { ...newProduct };
 
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
-    });
-  }
+  //     fs.writeFile(p, JSON.stringify(products), (err) => {
+  //       console.log(err);
+  //     });
+  //   });
+  //}
 
   static fetchAll() {
     return JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
