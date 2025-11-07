@@ -1,30 +1,31 @@
 [
   {
+    "id": "1",
     "title": "ssadsaddsfdsf",
     "price": "20.00",
     "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
-    "description": "                    asdasd\r\n                ",
-    "product": {
-      "id": "1",
-      "title": "ssadsad",
-      "price": "20.00",
-      "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
-      "description": "asdasd"
-    }
+    "description": "asdasd"
   },
   {
-    "id": "2",
-    "title": "My Book 02",
-    "price": "19.99",
-    "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
-    "description": "                    A very interesting book about so many even more interesting things!\r\n                "
+    "id": "4",
+    "title": "ssadsaddsfdsf",
+    "price": "20.00",
+    "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
+    "description": "asdasd"
   },
   {
-    "id": "3",
-    "title": "Another Book",
-    "price": "29.99",
-    "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
-    "description": "This book is even more interesting than the last one!"
+    "id": "5",
+    "title": "ssadsaddsfdsf",
+    "price": "20.00",
+    "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
+    "description": "asdasd"
+  },
+  {
+    "id": "6",
+    "title": "ssadsaddsfdsf",
+    "price": "20.00",
+    "imageUrl": "https://i.redd.it/uz5gc2w5syg21.jpg",
+    "description": "asdasd"
   },
   {
     "id": "0.7675459711994737",
@@ -32,12 +33,5 @@
     "price": "300",
     "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
     "description": "                    prova\r\n                "
-  },
-  {
-    "id": "0.0159649988022601",
-    "title": "diocane",
-    "price": "300",
-    "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
-    "description": "diocane                    \r\n                "
   }
 ]

@@ -83,4 +83,20 @@ module.exports = class Product {
 
     return products.find((product) => product.id === id);
   }
+
+  static deleteProduct(id) {
+    fs.readFile(p, (err, fileContent) => {
+      let products = [];
+
+      if (!err && fileContent.length > 0) {
+        products = JSON.parse(fileContent);
+      }
+
+      const newProducts = products.filter((prod) => prod.id !== id);
+
+      fs.writeFile(p, JSON.stringify(newProducts), (err) => {
+        console.log(err);
+      });
+    });
+  }
 };
