@@ -28,4 +28,30 @@ module.exports = class Cart {
       });
     });
   }
+
+  static deleteProduct(id, price) {
+    fs.readFile(p, (err, fileContent) => {
+      let cart = { products: [], totalPrice: 0 };
+
+      if (!err) {
+        cart = JSON.parse(fileContent);
+      }
+
+      const prodCart = cart.products.find((prod) => prod.id === id);
+
+      if (!prodCart) {
+        return;
+      }
+
+      const prodQuantity = prodCart.qty;
+
+      cart.totalPrice = cart.totalPrice - price * prodQuantity;
+
+      cart.products = cart.products.filter((prod) => prod.id !== id);
+
+      fs.writeFile(p, JSON.stringify(cart), (err) => {
+        console.log(err);
+      });
+    });
+  }
 };
