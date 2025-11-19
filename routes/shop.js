@@ -19,6 +19,9 @@ router.post("/cart", shopController.postCart);
 // /orders => GET
 router.get("/orders", shopController.getOrders);
 
+// /cart-delete-item => POST
+router.post("/cart-delete-item", shopController.postCartDeleteProduct);
+
 module.exports = router;
 
 // path.join is used to create a path that works on all operating systems
