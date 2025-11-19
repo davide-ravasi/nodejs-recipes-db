@@ -29,6 +29,10 @@ module.exports = class Cart {
     });
   }
 
+  static getProducts() {
+    return JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
+  }
+
   static deleteProduct(id, price) {
     fs.readFile(p, (err, fileContent) => {
       let cart = { products: [], totalPrice: 0 };
