@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: nodejs-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: shop
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    ports:
+      - "8082:8978"
+    depends_on:
+      - mysql
+    volumes:
+      - cloudbeaver_data:/opt/cloudbeaver/workspace
+
+volumes:
+  mysql_data:
+  cloudbeaver_data:

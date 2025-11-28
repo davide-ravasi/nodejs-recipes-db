@@ -4,8 +4,17 @@ const bodyParser = require("body-parser");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const errorController = require("./controllers/error");
+const db = require("./utils/database");
 
 const app = express();
+
+db.execute("SELECT * FROM products LIMIT 50")
+  .then(([rows, fieldData]) => {
+    console.log(rows);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.set("view engine", "ejs");
 
