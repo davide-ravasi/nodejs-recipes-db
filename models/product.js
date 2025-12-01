@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Cart = require("./cart");
+const db = require("../utils/database");
 
 const p = path.join(
   path.dirname(require.main.filename),
@@ -18,35 +19,10 @@ module.exports = class Product {
   }
 
   save() {
-    fs.readFile(p, (err, fileContent) => {
-      let products = [];
-
-      if (!err && fileContent.length > 0) {
-        products = JSON.parse(fileContent);
-      }
-
-      if (this.id) {
-        const prodIndex = products.findIndex((prod) => {
-          return prod.id === this.id;
-        });
-
-        if (prodIndex === -1) {
-          return;
-        }
-
-        products[prodIndex] = this;
-
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.log(err);
-        });
-      } else {
-        this.id = Math.random().toString();
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.log(err);
-        });
-      }
-    });
+    return db.execute(
+      "INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)",
+      [this.title, this.price, this.imageUrl, this.description]
+    );
   }
 
   // static edit(productId, newProduct) {
@@ -76,13 +52,14 @@ module.exports = class Product {
   //}
 
   static fetchAll() {
-    return JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
+    return db.execute("SELECT * FROM products");
   }
 
   static findById(id) {
-    const products = JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
+    //const products = JSON.parse(fs.readFileSync(p, "utf-8") || "[]");
 
-    return products.find((product) => product.id === id);
+    //return products.find((product) => product.id === id);
+    return db.execute("SELECT * FROM products WHERE products.id = ?", [id]);
   }
 
   static deleteProduct(id) {
