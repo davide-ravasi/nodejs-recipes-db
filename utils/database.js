@@ -1,8 +1,17 @@
+const sequelize = require("sequelize");
+
+const sequelizeInstance = new sequelize("shop", "root", "password", {
+  dialect: "mysql",
+  host: "localhost",
+});
+
+module.exports = sequelizeInstance;
+
 // Get the client
-const mysql = require("mysql2");
+//const mysql = require("mysql2");
 
 // Create the connection pool. The pool-specific settings are the defaults
-const pool = mysql.createPool({
+/*const pool = mysql.createPool({
   host: "localhost",
   user: "root",
   database: "shop",
@@ -14,6 +23,6 @@ const pool = mysql.createPool({
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
-});
+}); */
 
-module.exports = pool.promise();
+// module.exports = pool.promise();
