@@ -1,4 +1,33 @@
-const fs = require("fs");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../utils/database");
+
+const Product = sequelize.define("product", {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
+  },
+  imageUrl: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+});
+
+module.exports = Product;
+
+/*const fs = require("fs");
 const path = require("path");
 const Cart = require("./cart");
 const db = require("../utils/database");
@@ -79,4 +108,4 @@ module.exports = class Product {
       });
     });
   }
-};
+}; */

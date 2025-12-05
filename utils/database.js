@@ -1,5 +1,6 @@
 const sequelize = require("sequelize");
 
+// setup connection pool using Sequelize
 const sequelizeInstance = new sequelize("shop", "root", "password", {
   dialect: "mysql",
   host: "localhost",

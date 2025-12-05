@@ -5,6 +5,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const errorController = require("./controllers/error");
 //const db = require("./utils/database");
+const sequelize = require("./utils/database");
 
 const app = express();
 
@@ -41,7 +42,16 @@ app.use(errorController.get404);
   `);
 }); */
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then((results) => {
+    //console.log(results);
+    console.log("Database synchronized");
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log("Error synchronizing database:", err);
+  });
 
 // app.listen do the same as below, express does it for us
 // const server = http.createServer(app);
