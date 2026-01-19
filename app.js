@@ -42,6 +42,19 @@ app.use(errorController.get404);
   `);
 }); */
 
+// sync the database with the models
+// sync() synchronizes all defined models to the database
+//
+// Options:
+// - No options (default): Creates tables ONLY if they don't exist
+//   Does NOT alter existing tables or columns
+//
+// - { force: true }: DROPS existing tables and recreates them
+//   WARNING: This deletes all data! Use only in development
+//
+// - { alter: true }: Alters existing tables to match model definitions
+//   Adds new columns, but may not remove columns or change types safely
+//
 sequelize
   .sync()
   .then((results) => {

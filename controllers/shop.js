@@ -2,21 +2,28 @@ const Cart = require("../models/cart");
 const Product = require("../models/product");
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll().then(([rows, fieldData]) => {
+  Product.findAll().then((products) => {
+    res.render("shop/index", {
+      pageTitle: "Shop",
+      path: "/",
+      prods: products,
+    });
+  });
+  /*Product.fetchAll().then(([rows, fieldData]) => {
     res.render("shop/index", {
       pageTitle: "Shop",
       path: "/",
       prods: rows,
     });
-  });
+  });*/
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll().then(([rows, fieldData]) => {
+  Product.findAll().then((products) => {
     res.render("shop/product-list", {
       pageTitle: "Products",
       path: "/products",
-      prods: rows,
+      prods: products,
     });
   });
 };
