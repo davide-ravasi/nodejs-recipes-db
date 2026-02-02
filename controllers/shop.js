@@ -31,17 +31,13 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
 
-  Product.findById(productId)
-    .then(([rows, fieldData]) => {
-      const product = rows[0];
+  Product.findByPk(productId)
+    .then((product) => {
       res.render("shop/product-detail", {
         pageTitle: product.title,
         path: "/products",
-        product: product,
+        product: product,  
       });
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 

@@ -40,11 +40,11 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll().then(([rows, fieldData]) => {
+  Product.findAll().then((products) => {
     res.render("admin/products", {
       pageTitle: "Admin Products",
       path: "/admin/products",
-      prods: rows,
+      prods: products,
     });
   });
 };
@@ -57,13 +57,10 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
 
-  Product.findById(prodId).then(([rows, fieldData]) => {
-    const product = rows[0];
-
+  Product.findByPk(prodId).then((product) => {
     if (!product) {
       return res.redirect("/");
     }
-
     res.render("admin/edit-product", {
       pageTitle: "Edit Product" + product.title,
       path: "/admin/edit-products",
@@ -73,28 +70,42 @@ exports.getEditProduct = (req, res, next) => {
   });
 };
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct = async (req, res, next) => {
   const productId = req.params.productId;
   const title = req.body.title;
   const price = req.body.price;
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
 
-  const updatedProduct = new Product(
-    productId,
-    title,
-    price,
-    imageUrl,
-    description
-  );
-  updatedProduct.save();
-  res.redirect("/admin/products");
+  try {
+    const product = await Product.findByPk(productId);
+    if (!product) {
+      return res.redirect("/");
+    }
+    product.title = title;
+    product.price = price;
+    product.imageUrl = imageUrl;
+    product.description = description;
+    await product.save();
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/admin/products");
+  }
 };
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteProduct = async (req, res, next) => {
   const productId = req.body.productId;
-
-  Product.deleteProduct(productId);
-
-  res.redirect("/admin/products");
+  try {
+    const product = await Product.findByPk(productId);
+    if (!product) {
+      return res.redirect("/admin/products");
+    }
+    await product.destroy();
+    console.log("Product deleted");
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/admin/products");
+  }
 };
