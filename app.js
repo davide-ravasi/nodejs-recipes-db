@@ -6,6 +6,8 @@ const shopRoutes = require("./routes/shop");
 const errorController = require("./controllers/error");
 //const db = require("./utils/database");
 const sequelize = require("./utils/database");
+const User = require("./models/user");
+const Product = require("./models/product");
 
 const app = express();
 
@@ -42,6 +44,9 @@ app.use(errorController.get404);
   `);
 }); */
 
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
+
 // sync the database with the models
 // sync() synchronizes all defined models to the database
 //
@@ -56,7 +61,7 @@ app.use(errorController.get404);
 //   Adds new columns, but may not remove columns or change types safely
 //
 sequelize
-  .sync()
+  .sync({ force: true })
   .then((results) => {
     //console.log(results);
     console.log("Database synchronized");
