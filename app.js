@@ -25,6 +25,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// Must run before routes that use req.user
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
+
 app.use("/admin", adminRoutes.routes);
 
 app.use(shopRoutes);
@@ -44,6 +57,9 @@ app.use(errorController.get404);
   `);
 }); */
 
+// define the relationships between the models
+// constraints: true means that the user is required to be present
+// onDelete: "CASCADE" means that if the user is deleted, all products associated with the user will be deleted
 Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
 
@@ -61,14 +77,23 @@ User.hasMany(Product);
 //   Adds new columns, but may not remove columns or change types safely
 //
 sequelize
-  .sync({ force: true })
-  .then((results) => {
-    //console.log(results);
-    console.log("Database synchronized");
+  .sync()
+  .then((result) => {
+    return User.findByPk(1);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Davide", email: "davide@example.com" });
+    }
+
+    return Promise.resolve(user);
+  })
+  .then((user) => {
+    console.log(user);
     app.listen(3000);
   })
   .catch((err) => {
-    console.log("Error synchronizing database:", err);
+    console.log(err);
   });
 
 // app.listen do the same as below, express does it for us
