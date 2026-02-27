@@ -25,6 +25,10 @@ exports.postAddProduct = (req, res, next) => {
       console.log(err);
     }); */
 
+  // the associated user will be created automatically
+  // due to the relationship between the user and the product
+  // and the constraints: true on the user model
+  // and the onDelete: "CASCADE" on the product models
   req.user
     .createProduct({
       title,
@@ -42,7 +46,7 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then((products) => {
+  req.user.getProducts().then((products) => {
     res.render("admin/products", {
       pageTitle: "Admin Products",
       path: "/admin/products",
@@ -59,7 +63,8 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
 
-  Product.findByPk(prodId).then((product) => {
+  req.user.getProducts({ where: { id: prodId } }).then((products) => {
+    const product = products[0];
     if (!product) {
       return res.redirect("/");
     }
