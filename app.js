@@ -93,7 +93,6 @@ sequelize
     if (!user) {
       return User.create({ name: "Davide", email: "davide@example.com" });
     }
-
     return Promise.resolve(user);
   })
   .then((user) => {
