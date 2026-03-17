@@ -85,28 +85,36 @@ exports.postCart = (req, res, next) => {
         return actualCart.addProduct(product, {
           through: { quantity: newQuantity },
         });
-        // to do: update quantity
       }
 
       return Product.findByPk(prodId).then((product) => {
         return actualCart.addProduct(product, { through: { quantity: 1 } });
       });
     });
-  //const prodId = req.body.productId;
-  //const product = Product.findById(prodId);
-  //console.log(product);
-  //Cart.addProduct(product);
-  //res.redirect("/cart");
+
+  res.redirect("/cart");
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const productId = req.body.productId;
-  const product = Product.findById(productId);
-  if (!product) {
-    return res.redirect("/cart");
-  }
+  const user = req.user;
 
-  Cart.deleteProduct(productId, product.price);
+  console.log("porcodio");
+
+  user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts({ where: { id: productId } });
+    })
+    .then((product) => {
+      return product[0]["cart-item"].destroy();
+    })
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   res.redirect("/cart");
 };
