@@ -99,8 +99,6 @@ exports.postCartDeleteProduct = (req, res, next) => {
   const productId = req.body.productId;
   const user = req.user;
 
-  console.log("porcodio");
-
   user
     .getCart()
     .then((cart) => {
