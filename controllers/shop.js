@@ -135,6 +135,13 @@ exports.getOrders = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
   const user = req.user;
   console.log("postOrder");
+
+  // no autocomplete please
+  // get cart items
+  // create order
+  // add cart items to order
+
+  res.redirect("/orders");
 };
 
 exports.getCheckout = (req, res, next) => {
