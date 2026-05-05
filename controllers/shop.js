@@ -132,6 +132,11 @@ exports.getOrders = (req, res, next) => {
   });
 };
 
+exports.postOrder = (req, res, next) => {
+  const user = req.user;
+  console.log("postOrder");
+};
+
 exports.getCheckout = (req, res, next) => {
   res.render("shop/checkout", {
     pageTitle: "Checkout",
