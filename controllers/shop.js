@@ -1,5 +1,6 @@
 const Cart = require("../models/cart");
 const Product = require("../models/product");
+const OrderItem = require("../models/order-item");
 
 exports.getIndex = (req, res, next) => {
   Product.findAll().then((products) => {
@@ -49,7 +50,6 @@ exports.getCart = (req, res, next) => {
       return cart.getProducts();
     })
     .then((products) => {
-      console.log("productsxxxx: ", products);
       res.render("shop/cart", {
         pageTitle: "Your Cart",
         path: "/cart",
@@ -126,22 +126,65 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  res.render("shop/orders", {
-    pageTitle: "Your Orders",
-    path: "/orders",
-  });
+  const user = req.user;
+  user
+    .getOrders()
+    .then((orders) => {
+      return orders[0].getProducts();
+    })
+    .then((products) => {
+      console.log("products: ", products);
+      res.render("shop/orders", {
+        pageTitle: "Your Orders",
+        path: "/orders",
+        products: products,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.postOrder = (req, res, next) => {
   const user = req.user;
   console.log("postOrder");
+  let actualProducts;
+  let actualCart;
 
-  // no autocomplete please
-  // get cart items
-  // create order
-  // add cart items to order
-
-  res.redirect("/orders");
+  user
+    .getCart()
+    .then((cart) => {
+      actualCart = cart; // it is assigned after the promise is resolved
+      return cart.getProducts();
+    })
+    .then((products) => {
+      actualProducts = products; // it is assigned after the promise is resolved
+      return user.createOrder();
+    })
+    .then((order) => {
+      //console.log("order: ", order);
+      //console.log("products: ", actualProducts);
+      actualProducts.forEach((product) => {
+        console.log("product: ", product);
+        console.log(
+          "product['cart-item'].quantity: ",
+          product["cart-item"].quantity,
+        );
+        order.addProduct(product, {
+          through: { quantity: product["cart-item"].quantity || 1 },
+        });
+      });
+      return order;
+    })
+    .then(() => {
+      return actualCart.setProducts(null, { through: null });
+    })
+    .then(() => {
+      res.redirect("/orders");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getCheckout = (req, res, next) => {
