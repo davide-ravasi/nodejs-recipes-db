@@ -1,6 +1,4 @@
-const Cart = require("../models/cart");
 const Product = require("../models/product");
-const OrderItem = require("../models/order-item");
 
 exports.getIndex = (req, res, next) => {
   Product.findAll().then((products) => {
@@ -128,16 +126,13 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
   const user = req.user;
   user
-    .getOrders()
+    .getOrders({ include: ["products"] })
     .then((orders) => {
-      return orders[0].getProducts();
-    })
-    .then((products) => {
-      console.log("products: ", products);
+      console.log("orders: ", orders);
       res.render("shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
-        products: products,
+        orders: orders,
       });
     })
     .catch((err) => {
@@ -147,7 +142,6 @@ exports.getOrders = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
   const user = req.user;
-  console.log("postOrder");
   let actualProducts;
   let actualCart;
 
@@ -165,11 +159,6 @@ exports.postOrder = (req, res, next) => {
       //console.log("order: ", order);
       //console.log("products: ", actualProducts);
       actualProducts.forEach((product) => {
-        console.log("product: ", product);
-        console.log(
-          "product['cart-item'].quantity: ",
-          product["cart-item"].quantity,
-        );
         order.addProduct(product, {
           through: { quantity: product["cart-item"].quantity || 1 },
         });

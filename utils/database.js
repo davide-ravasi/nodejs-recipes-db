@@ -1,29 +1,27 @@
-const sequelize = require("sequelize");
+const mongodb = require("mongodb");
+const MongoCLient = mongodb.MongoClient;
 
-// setup connection pool using Sequelize
-const sequelizeInstance = new sequelize("shop", "root", "password", {
-  dialect: "mysql",
-  host: "localhost",
-});
+const mongoConnect = (callback) => {
+  const user = process.env.MONGODB_USER;
+  const pw = process.env.MONGODB_PW;
+  const dbNAme = process.env.MONGODB_DB;
 
-module.exports = sequelizeInstance;
+  MongoCLient.connect(
+    "mongodb+srv://" +
+      user +
+      ":" +
+      pw +
+      "@cluster0.ijrdt.mongodb.net/" +
+      dbNAme +
+      "?retryWrites=true&w=majority",
+  )
+    .then((client) => {
+      console.log("connected");
+      callback(client);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-// Get the client
-//const mysql = require("mysql2");
-
-// Create the connection pool. The pool-specific settings are the defaults
-/*const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  database: "shop",
-  password: "password",
-  waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
-  idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
-}); */
-
-// module.exports = pool.promise();
+module.exports = mongoConnect;
