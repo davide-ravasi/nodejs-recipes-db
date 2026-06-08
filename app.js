@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-//const adminRoutes = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 //const shopRoutes = require("./routes/shop");
 //const errorController = require("./controllers/error");
 const dotenv = require("dotenv");
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
     });*/
 });
 
-//app.use("/admin", adminRoutes.routes);
+app.use("/admin", adminRoutes.routes);
 
 //app.use(shopRoutes);
 
@@ -46,7 +46,6 @@ app.use((req, res, next) => {
 // that are not handled by any of the above routes
 //app.use(errorController.get404);
 
-mongoConnect((client) => {
-  console.log(client);
+mongoConnect(() => {
   app.listen(3000);
 });

@@ -1,22 +1,24 @@
 const mongodb = require("mongodb");
-const MongoCLient = mongodb.MongoClient;
+const MongoClient = mongodb.MongoClient;
 
 const mongoConnect = (callback) => {
   const user = process.env.MONGODB_USER;
   const pw = process.env.MONGODB_PW;
-  const dbNAme = process.env.MONGODB_DB;
+  const dbName = process.env.MONGODB_DB;
+  let _db;
 
-  MongoCLient.connect(
+  MongoClient.connect(
     "mongodb+srv://" +
       user +
       ":" +
       pw +
       "@cluster0.ijrdt.mongodb.net/" +
-      dbNAme +
+      dbName +
       "?retryWrites=true&w=majority",
   )
     .then((client) => {
       console.log("connected");
+      _db = client.db();
       callback(client);
     })
     .catch((err) => {
@@ -24,4 +26,13 @@ const mongoConnect = (callback) => {
     });
 };
 
-module.exports = mongoConnect;
+const getDb = () => {
+  if (_db) {
+    return _db;
+  }
+
+  throw "NO database found";
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
