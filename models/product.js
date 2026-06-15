@@ -11,7 +11,22 @@ class Product {
     this.description = description;
   }
 
-  save() {}
+  save() {
+    const db = getDb();
+    db.collection("products")
+      .insertOne({
+        title: this.title,
+        price: this.price,
+        imageUrl: this.imageUrl,
+        description: this.description,
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 
 /*const Product = sequelize.define("product", {

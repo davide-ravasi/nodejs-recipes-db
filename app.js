@@ -5,7 +5,7 @@ const adminRoutes = require("./routes/admin");
 //const shopRoutes = require("./routes/shop");
 //const errorController = require("./controllers/error");
 const dotenv = require("dotenv");
-const mongoConnect = require("./utils/database");
+const { mongoConnect } = require("./utils/database");
 
 dotenv.config();
 
@@ -36,6 +36,7 @@ app.use((req, res, next) => {
       console.log(err);
       next(err);
     });*/
+  next();
 });
 
 app.use("/admin", adminRoutes.routes);
