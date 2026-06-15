@@ -1,6 +1,6 @@
-const { DataTypes } = require("sequelize");
+//const { DataTypes } = require("sequelize");
 // fully configured sequelize environment
-const sequelize = require("../utils/database");
+//const sequelize = require("../utils/database");
 const getDb = require("../utils/database").getDb;
 
 class Product {
@@ -13,7 +13,8 @@ class Product {
 
   save() {
     const db = getDb();
-    db.collection("products")
+    return db
+      .collection("products")
       .insertOne({
         title: this.title,
         price: this.price,
