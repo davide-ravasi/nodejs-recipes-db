@@ -13,6 +13,7 @@ class Product {
 
   save() {
     const db = getDb();
+
     return db
       .collection("products")
       .insertOne({

@@ -1,11 +1,11 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
+let _db;
 
 const mongoConnect = (callback) => {
   const user = process.env.MONGODB_USER;
   const pw = process.env.MONGODB_PW;
   const dbName = process.env.MONGODB_DB;
-  let _db;
 
   MongoClient.connect(
     "mongodb+srv://" +

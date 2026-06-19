@@ -29,7 +29,7 @@ exports.postAddProduct = (req, res, next) => {
   // due to the relationship between the user and the product
   // and the constraints: true on the user model
   // and the onDelete: "CASCADE" on the product models
-  req.user
+  /*req.user
     .createProduct({
       title,
       price,
@@ -39,6 +39,16 @@ exports.postAddProduct = (req, res, next) => {
     .then((results) => {
       console.log("Created product");
       res.redirect("/admin/products");
+    })
+    .catch((err) => 
+      console.log(err);
+    }); */
+
+  const product = new Product(title, price, imageUrl, description);
+  product
+    .save()
+    .then(() => {
+      res.redirect("/");
     })
     .catch((err) => {
       console.log(err);

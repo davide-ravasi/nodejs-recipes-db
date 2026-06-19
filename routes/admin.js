@@ -5,24 +5,24 @@ const adminController = require("../controllers/admin");
 router.get("/add-product", adminController.getAddProduct);
 
 // /admin/product => POST
-router.post("/product", (req, res, next) => {
+/*router.post("/product", (req, res, next) => {
   console.log(req.body);
   res.redirect("/");
-});
+});*/
 
 // /admin/products => GET
-router.get("/products", adminController.getProducts);
+//router.get("/products", adminController.getProducts);
 
 // /admin/products => POST
 router.post("/add-product", adminController.postAddProduct);
 
 // /admin/edit-product => GET
-router.get("/edit-product/:productId", adminController.getEditProduct);
+//router.get("/edit-product/:productId", adminController.getEditProduct);
 
 // /admin/edit-product => POST
-router.post("/edit-product/:productId", adminController.postEditProduct);
+//router.post("/edit-product/:productId", adminController.postEditProduct);
 
 // /admin/delete-product => POST
-router.post("/delete-product", adminController.postDeleteProduct);
+//router.post("/delete-product", adminController.postDeleteProduct);
 
 exports.routes = router;
