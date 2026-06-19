@@ -56,13 +56,22 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  req.user.getProducts().then((products) => {
+  // mongodb environment
+
+  Product.fetchAll().then((products) => {
     res.render("admin/products", {
       pageTitle: "Admin Products",
       path: "/admin/products",
       prods: products,
     });
   });
+  /*Product.findAll().then((products) => {
+    res.render("admin/products", {
+      pageTitle: "Admin Products",
+      path: "/admin/products",
+      prods: products,
+    });
+  });*/
 };
 
 exports.getEditProduct = (req, res, next) => {
