@@ -1,24 +1,17 @@
 const Product = require("../models/product");
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll().then((products) => {
+  Product.fetchAll().then((products) => {
     res.render("shop/index", {
       pageTitle: "Shop",
       path: "/",
       prods: products,
     });
   });
-  /*Product.fetchAll().then(([rows, fieldData]) => {
-    res.render("shop/index", {
-      pageTitle: "Shop",
-      path: "/",
-      prods: rows,
-    });
-  });*/
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then((products) => {
+  Product.fetchAll().then((products) => {
     res.render("shop/product-list", {
       pageTitle: "Products",
       path: "/products",

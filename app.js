@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const adminRoutes = require("./routes/admin");
-//const shopRoutes = require("./routes/shop");
+const shopRoutes = require("./routes/shop");
 //const errorController = require("./controllers/error");
 const dotenv = require("dotenv");
 const { mongoConnect } = require("./utils/database");
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 
 app.use("/admin", adminRoutes.routes);
 
-//app.use(shopRoutes);
+app.use(shopRoutes);
 
 // 404 page - it catch all the requests
 // that are not handled by any of the above routes
