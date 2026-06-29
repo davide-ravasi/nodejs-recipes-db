@@ -2,6 +2,7 @@
 // fully configured sequelize environment
 //const sequelize = require("../utils/database");
 const getDb = require("../utils/database").getDb;
+const mongodb = require("mongodb");
 
 class Product {
   constructor(title, price, imageUrl, description) {
@@ -19,7 +20,24 @@ class Product {
       .toArray()
       .then((products) => {
         console.log(products);
-        return products;
+        const transformedProducts = products.map((product) => {
+          return { id: product._id, ...product };
+        });
+        return transformedProducts;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  static findById(id) {
+    const db = getDb();
+    return db
+      .collection("products")
+      .findOne({ _id: new mongodb.ObjectId(id) })
+      .then((product) => {
+        console.log(product);
+        return product;
       })
       .catch((err) => {
         console.log(err);
