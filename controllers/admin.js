@@ -69,7 +69,7 @@ exports.getProducts = (req, res, next) => {
     res.render("admin/products", {
       pageTitle: "Admin Products",
       path: "/admin/products",
-      prods: products,
+      prods: products, 
     });
   });*/
 };
@@ -82,7 +82,25 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
 
-  req.user.getProducts({ where: { id: prodId } }).then((products) => {
+  Product.findById(prodId)
+    .then((product) => {
+      console.log(product);
+      if (!product) {
+        return res.redirect("/");
+      }
+
+      res.render("admin/edit-product", {
+        pageTitle: "Edit Product" + product.title,
+        path: "/admin/edit-products",
+        editing: editMode,
+        product: product,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  /*req.user.getProducts({ where: { id: prodId } }).then((products) => {
     const product = products[0];
     if (!product) {
       return res.redirect("/");
@@ -93,7 +111,7 @@ exports.getEditProduct = (req, res, next) => {
       editing: editMode,
       product: product,
     });
-  });
+  });*/
 };
 
 exports.postEditProduct = async (req, res, next) => {
@@ -103,7 +121,16 @@ exports.postEditProduct = async (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
 
-  try {
+  Product.edit(productId, { title, price, imageUrl, description })
+    .then(() => {
+      console.log("Product updated");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  /* try {
     const product = await Product.findByPk(productId);
     if (!product) {
       return res.redirect("/");
@@ -117,7 +144,7 @@ exports.postEditProduct = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.redirect("/admin/products");
-  }
+  }*/
 };
 
 exports.postDeleteProduct = async (req, res, next) => {

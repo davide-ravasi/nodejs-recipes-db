@@ -44,6 +44,22 @@ class Product {
       });
   }
 
+  static edit(productId, { title, price, imageUrl, description }) {
+    const db = getDb();
+    return db
+      .collection("products")
+      .updateOne(
+        { _id: new mongodb.ObjectId(productId.toString()) },
+        { $set: { title, price, imageUrl, description } },
+      )
+      .then(() => {
+        console.log("Product updated");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   save() {
     const db = getDb();
 
