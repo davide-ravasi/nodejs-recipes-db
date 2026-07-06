@@ -121,7 +121,9 @@ exports.postEditProduct = async (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
 
-  Product.edit(productId, { title, price, imageUrl, description })
+  const product = new Product(title, price, imageUrl, description, productId);
+  product
+    .save()
     .then(() => {
       console.log("Product updated");
       res.redirect("/admin/products");

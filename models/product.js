@@ -5,7 +5,8 @@ const getDb = require("../utils/database").getDb;
 const mongodb = require("mongodb");
 
 class Product {
-  constructor(title, price, imageUrl, description) {
+  constructor(title, price, imageUrl, description, id) {
+    this._id = id;
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
@@ -44,7 +45,7 @@ class Product {
       });
   }
 
-  static edit(productId, { title, price, imageUrl, description }) {
+  /*static edit(productId, { title, price, imageUrl, description }) {
     const db = getDb();
     return db
       .collection("products")
@@ -58,24 +59,41 @@ class Product {
       .catch((err) => {
         console.log(err);
       });
-  }
+  }*/
 
   save() {
     const db = getDb();
+    let result;
 
-    return db
-      .collection("products")
-      .insertOne({
+    if (this._id) {
+      result = db.collection("products").updateOne(
+        { _id: new mongodb.ObjectId(this._id.toString()) },
+        {
+          $set: {
+            title: this.title,
+            price: this.price,
+            imageUrl: this.imageUrl,
+            description: this.description,
+          },
+        },
+      );
+    } else {
+      result = db.collection("products").insertOne({
         title: this.title,
         price: this.price,
         imageUrl: this.imageUrl,
         description: this.description,
-      })
+      });
+    }
+
+    return result
       .then((result) => {
         console.log(result);
+        return result;
       })
       .catch((err) => {
         console.log(err);
+        throw err;
       });
   }
 }
